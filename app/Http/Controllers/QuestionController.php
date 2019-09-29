@@ -42,6 +42,7 @@ class QuestionController extends Controller
     public function show(Question $question)
     {
         return new QuestionResource($question);
+        return response('Created', Response::HTTP_CREATED);
     }
 
 
@@ -54,7 +55,8 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $question->update($request->all());
+        return response('Updated', Response::HTTP_ACCEPTED);
     }
 
     /**

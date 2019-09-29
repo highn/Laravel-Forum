@@ -7,6 +7,12 @@ use App\user;
 
 class Category extends Model
 {
+    public function getRouteKeyName() {
+        return 'slug';
+    }
+
+    protected $guarded = [];
+    
     public function user() {
         return $this->belongsTo(User::class);
     }
