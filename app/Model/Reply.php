@@ -12,10 +12,17 @@ class Reply extends Model
     {
         return $this->belongsTo(Question::class);
     }
+
+    protected $guarded = [];
+
+    
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
+
     public function like()
     {
         return $this->hasMany(Like::class);
