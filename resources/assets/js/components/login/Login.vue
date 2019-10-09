@@ -4,6 +4,7 @@
             <v-text-field v-model="form.email" type="email" label="email" required></v-text-field>
             <v-text-field v-model="form.password" type="password" label="password" required></v-text-field>
             <v-btn color="green" type="submit">Login</v-btn>
+            <router-link to="/signup" color="green"><v-btn flat >Signup</v-btn></router-link>
         </v-form>
     </v-container>
 </template>

@@ -1,0 +1,48 @@
+<template>
+     <v-container>
+        <v-form @submit.prevent="signup">
+            <v-text-field v-model="form.name" type="name" label="name" required></v-text-field>
+            <span class="red--text" v-if="errors.name">{{errors.name[0]}}</span>
+            <v-text-field v-model="form.email" type="email" label="email" required></v-text-field>
+            <span class="red--text" v-if="errors.email">{{errors.email[0]}}</span>
+            <v-text-field v-model="form.password" type="password" label="password" required></v-text-field>
+            <span class="red--text" v-if="errors.password">{{errors.password[0]}}</span>
+            <v-text-field v-model="form.password_confirmation" type="password" label="Confirm password" required></v-text-field>
+            <v-btn color="green" type="submit">Register</v-btn>
+            <router-link to="/login" color="green"><v-btn flat >Log in</v-btn></router-link>
+        </v-form>
+    </v-container>
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                form: {
+                    name:null,
+                    email:null,
+                    password:null,
+                    password_confirmation:null
+                },
+                errors: {}
+            }
+        },
+        methods: {
+            signup() {
+                axios.post('/api/auth/signup', this.form)
+               
+                .then(res => User.responseAfterLogin(res))
+                
+                //.catch(function(response){
+                //    console.log('response.data.msg');
+                //    console.log('response.data.status');
+                //})
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+            }
+        }
+    }
+</script>
+

@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use App\Model\Question;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
