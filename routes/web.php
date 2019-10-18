@@ -12,4 +12,9 @@
 */
 
 Route::view('/', 'home');
+Route::get('/clear', function() {
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    return "Cache is cleared";
+});
 Route::view('/{any}', 'home');

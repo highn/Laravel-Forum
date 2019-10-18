@@ -14681,7 +14681,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vuet
 
 
 window.User = __WEBPACK_IMPORTED_MODULE_2__Helpers_User__["a" /* default */];
-console.log(__WEBPACK_IMPORTED_MODULE_2__Helpers_User__["a" /* default */].id());
+console.log("User ID " + __WEBPACK_IMPORTED_MODULE_2__Helpers_User__["a" /* default */].id());
+console.log("User Logged In " + __WEBPACK_IMPORTED_MODULE_2__Helpers_User__["a" /* default */].loggedIn());
+
+window.EventBus = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -75383,16 +75386,20 @@ var User = function () {
         value: function responseAfterLogin(res) {
             var access_token = res.data.access_token;
             var username = res.data.user;
-
+            console.log("AccessToken isValid: " + access_token);
             if (__WEBPACK_IMPORTED_MODULE_0__Token__["a" /* default */].isValid(access_token)) {
                 console.log("AccessToken isValid: " + access_token);
                 __WEBPACK_IMPORTED_MODULE_1__AppStorage__["a" /* default */].store(username, access_token);
+                window.location = '/forum';
+            } else {
+                console.log("Invalid Login");
             }
         }
     }, {
         key: 'hasToken',
         value: function hasToken() {
             var storedToken = __WEBPACK_IMPORTED_MODULE_1__AppStorage__["a" /* default */].getToken();
+            console.log(storedToken);
             if (storedToken) {
                 return __WEBPACK_IMPORTED_MODULE_0__Token__["a" /* default */].isValid(storedToken) ? true : false;
             }
@@ -75407,6 +75414,7 @@ var User = function () {
         key: 'logout',
         value: function logout() {
             __WEBPACK_IMPORTED_MODULE_1__AppStorage__["a" /* default */].clear();
+            window.location = '/forum';
         }
     }, {
         key: 'name',
@@ -75757,8 +75765,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
 
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      items: [{ title: 'Forum', to: '/forum', show: true }, { title: 'Ask Question', to: '/ask', show: User.loggedIn() }, { title: 'Category', to: '/category', show: User.loggedIn() }, { title: 'Login', to: '/login', show: !User.loggedIn() }, { title: 'Logout', to: '/logout', show: User.loggedIn() }]
+    };
+  },
+  created: function created() {
+    EventBus.$on('Logout', function () {
+      User.logout();
+    });
+  }
+});
 
 /***/ }),
 /* 54 */
@@ -75780,35 +75804,20 @@ var render = function() {
       _c(
         "div",
         { staticClass: "hidden-sm-and-down" },
-        [
-          _c(
-            "router-link",
-            { attrs: { to: "/forum" } },
-            [_c("v-btn", { attrs: { flat: "" } }, [_vm._v("Forum")])],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            { attrs: { to: "/ask" } },
-            [_c("v-btn", { attrs: { flat: "" } }, [_vm._v("Ask Question")])],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            { attrs: { to: "/category" } },
-            [_c("v-btn", { attrs: { flat: "" } }, [_vm._v("Category")])],
-            1
-          ),
-          _vm._v(" "),
-          _c(
-            "router-link",
-            { attrs: { to: "/login" } },
-            [_c("v-btn", { attrs: { flat: "" } }, [_vm._v("Login")])],
-            1
-          )
-        ],
+        _vm._l(_vm.items, function(item) {
+          return item.show
+            ? _c(
+                "router-link",
+                { key: item.title, attrs: { to: item.to } },
+                [
+                  _c("v-btn", { attrs: { flat: "" } }, [
+                    _vm._v(_vm._s(item.title))
+                  ])
+                ],
+                1
+              )
+            : _vm._e()
+        }),
         1
       )
     ],
@@ -75952,7 +75961,7 @@ exports = module.exports = __webpack_require__(13)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -75984,10 +75993,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         };
     },
+    created: function created() {
+        if (User.loggedIn()) {
+            this.$router.push({ name: 'forum' });
+        }
+    },
 
     methods: {
         login: function login() {
             User.login(this.form);
+            //this.$router.push({ name: 'forum' })
         }
     }
 });
@@ -76103,10 +76118,12 @@ if (false) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_router__ = __webpack_require__(64);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_Login__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__login_Login___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__login_Login__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_Signup__ = __webpack_require__(65);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_Signup___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__login_Signup__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__forum_Forum__ = __webpack_require__(68);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__forum_Forum___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__forum_Forum__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_Logout__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_Logout___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__login_Logout__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__login_Signup__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__login_Signup___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__login_Signup__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__forum_Forum__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__forum_Forum___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__forum_Forum__);
 
 
 
@@ -76115,9 +76132,10 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vue_
 
 
 
+
 var routes = [
 //{ path: '/', component: Home },
-{ path: '/login', component: __WEBPACK_IMPORTED_MODULE_2__login_Login___default.a }, { path: '/signup', component: __WEBPACK_IMPORTED_MODULE_3__login_Signup___default.a }, { path: '/forum', component: __WEBPACK_IMPORTED_MODULE_4__forum_Forum___default.a, name: 'forum' }];
+{ path: '/login', component: __WEBPACK_IMPORTED_MODULE_2__login_Login___default.a }, { path: '/logout', component: __WEBPACK_IMPORTED_MODULE_3__login_Logout___default.a }, { path: '/signup', component: __WEBPACK_IMPORTED_MODULE_4__login_Signup___default.a }, { path: '/forum', component: __WEBPACK_IMPORTED_MODULE_5__forum_Forum___default.a, name: 'forum' }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_1_vue_router__["a" /* default */]({
     routes: routes, // short for `routes: routes`
@@ -79098,18 +79116,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             errors: {}
         };
     },
+    created: function created() {
+        if (User.loggedIn()) {
+            this.$router.push({ name: 'forum' });
+        }
+    },
 
     methods: {
         signup: function signup() {
-            axios.post('/api/auth/signup', this.form).then(function (res) {
-                return User.responseAfterLogin(res);
-            })
+            var _this = this;
 
-            //.catch(function(response){
-            //    console.log('response.data.msg');
-            //    console.log('response.data.status');
-            //})
-            .catch(function (error) {
+            axios.post('/api/auth/signup', this.form).then(function (res) {
+                User.responseAfterLogin(res);
+                _this.$router.push({ name: 'forum' });
+            }).catch(function (response) {
+                console.log('response.data.msg');
+                console.log('response.data.status');
+            }).catch(function (error) {
                 // handle error
                 console.log(error);
             });
@@ -79304,6 +79327,94 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(76)
+/* template */
+var __vue_template__ = __webpack_require__(77)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/login/Logout.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-093e40a7", Component.options)
+  } else {
+    hotAPI.reload("data-v-093e40a7", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    created: function created() {
+        EventBus.$emit('Logout');
+    }
+});
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div")
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-093e40a7", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

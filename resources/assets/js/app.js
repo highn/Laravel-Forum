@@ -16,8 +16,10 @@ Vue.use(Vuetify)
 
 import User from './Helpers/User'
 window.User = User
-console.log(User.id());
-console.log(User.loggedin());
+console.log("User ID "+User.id());
+console.log("User Logged In "+User.loggedIn());
+
+window.EventBus = new Vue();
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

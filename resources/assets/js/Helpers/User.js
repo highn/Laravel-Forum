@@ -19,10 +19,11 @@ class User {
     responseAfterLogin(res) {
         const access_token = res.data.access_token;
         const username = res.data.user;
-        
+        console.log("AccessToken isValid: "+access_token);
         if(Token.isValid(access_token)) {
             console.log("AccessToken isValid: "+access_token);
             AppStorage.store(username,access_token);
+            window.location = '/forum'
         } else {
             console.log("Invalid Login");
         }
@@ -30,6 +31,7 @@ class User {
 
     hasToken() {
         const storedToken = AppStorage.getToken();
+        console.log(storedToken);
         if(storedToken) {
             return Token.isValid(storedToken) ? true : false
         }
@@ -42,6 +44,7 @@ class User {
 
     logout() {
         AppStorage.clear()
+        window.location = '/forum'
     }
 
     name() {
